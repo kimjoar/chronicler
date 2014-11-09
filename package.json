@@ -1,6 +1,6 @@
 {
   "name": "chronicler",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Keeps track of browser history",
   "main": "index.js",
   "dependencies": {},
@@ -16,7 +16,9 @@
   },
   "scripts": {
     "test": "testem ci",
-    "build": "browserify index.js --standalone chronicler | derequire > dist/chronicler.js"
+    "build-dev": "browserify index.js --standalone chronicler | derequire > dist/chronicler.js",
+    "build-min": "browserify index.js --standalone chronicler | derequire | uglifyjs -c > dist/chronicler.min.js",
+    "build": "npm run build-dev && npm run build-min"
   },
   "author": "Kim Joar Bekkelund <kjbekkelund@gmail.com>",
   "license": "MIT"
