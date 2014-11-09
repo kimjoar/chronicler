@@ -1,33 +1,33 @@
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.chronicler=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 var EventEmitter = _dereq_('events').EventEmitter;
+var assign = _dereq_('object-assign');
 
 module.exports = function() {
-    return pushState();
-};
-
-function pushState() {
     var events = new EventEmitter();
 
-    function change() {
+    var obj = hashChange(function() {
         events.emit("change", decodeURI(getHash()));
-    }
+    });
 
-    function goTo(hash) {
-        window.location.hash = hash;
-    }
-
-    return {
-        start: function() {
-            window.addEventListener("hashchange", change, false);
-            change();
-        },
-        stop: function() {
-            window.removeEventListener("hashchange", change, false);
-        },
-        goTo: goTo,
+    return assign(obj, {
         on: events.on.bind(events),
         once: events.once.bind(events),
         removeListener: events.removeListener.bind(events)
+    });
+};
+
+function hashChange(trigger) {
+    return {
+        start: function() {
+            window.addEventListener("hashchange", trigger, false);
+            trigger();
+        },
+        stop: function() {
+            window.removeEventListener("hashchange", trigger, false);
+        },
+        goTo: function goTo(hash) {
+            window.location.hash = hash;
+        }
     }
 }
 
@@ -37,7 +37,7 @@ function getHash() {
 }
 
 
-},{"events":2}],2:[function(_dereq_,module,exports){
+},{"events":2,"object-assign":3}],2:[function(_dereq_,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -339,6 +339,45 @@ function isObject(arg) {
 function isUndefined(arg) {
   return arg === void 0;
 }
+
+},{}],3:[function(_dereq_,module,exports){
+'use strict';
+
+function ToObject(val) {
+	if (val == null) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+module.exports = Object.assign || function (target, source) {
+	var pendingException;
+	var from;
+	var keys;
+	var to = ToObject(target);
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = arguments[s];
+		keys = Object.keys(Object(from));
+
+		for (var i = 0; i < keys.length; i++) {
+			try {
+				to[keys[i]] = from[keys[i]];
+			} catch (err) {
+				if (pendingException === undefined) {
+					pendingException = err;
+				}
+			}
+		}
+	}
+
+	if (pendingException) {
+		throw pendingException;
+	}
+
+	return to;
+};
 
 },{}]},{},[1])(1)
 });
