@@ -6,12 +6,12 @@ works great together with
 [routine](https://github.com/kjbekkelund/routine).
 
 ```javascript
-var h = chronicler();
-h.on("change", function(fragment) {
+var hash = chronicler();
+hash.on("change", function(fragment) {
     console.log(fragment); //=> "some/url"
 });
 
-h.start();
+hash.start();
 
 window.location.hash = "some/url";
 ```
