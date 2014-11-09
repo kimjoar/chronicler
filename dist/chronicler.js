@@ -8,18 +8,26 @@ module.exports = function() {
 function pushState() {
     var events = new EventEmitter();
 
-    function trigger() {
-        var hash = getHash();
-        events.emit("change", hash);
+    function change() {
+        goTo(getHash());
+    }
+
+    function goTo(hash) {
+        events.emit("change", decodeURI(hash));
     }
 
     return {
         start: function() {
-            window.addEventListener("hashchange", trigger, false);
+            window.addEventListener("hashchange", change, false);
+            change();
         },
         stop: function() {
-            window.removeEventListener("hashchange", trigger, false);
-        }
+            window.removeEventListener("hashchange", change, false);
+        },
+        goTo: goTo,
+        on: events.on.bind(events),
+        once: events.once.bind(events),
+        removeListener: events.removeListener.bind(events)
     }
 }
 
