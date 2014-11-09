@@ -22,3 +22,5 @@ Installation
 ```
 npm install chronicler
 ```
+
+Or download from `dist` folder.
