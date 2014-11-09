@@ -1,32 +1,32 @@
 var EventEmitter = require('events').EventEmitter;
+var assign = require('object-assign');
 
 module.exports = function() {
-    return pushState();
-};
-
-function pushState() {
     var events = new EventEmitter();
 
-    function change() {
+    var obj = hashChange(function() {
         events.emit("change", decodeURI(getHash()));
-    }
+    });
 
-    function goTo(hash) {
-        window.location.hash = hash;
-    }
-
-    return {
-        start: function() {
-            window.addEventListener("hashchange", change, false);
-            change();
-        },
-        stop: function() {
-            window.removeEventListener("hashchange", change, false);
-        },
-        goTo: goTo,
+    return assign(obj, {
         on: events.on.bind(events),
         once: events.once.bind(events),
         removeListener: events.removeListener.bind(events)
+    });
+};
+
+function hashChange(trigger) {
+    return {
+        start: function() {
+            window.addEventListener("hashchange", trigger, false);
+            trigger();
+        },
+        stop: function() {
+            window.removeEventListener("hashchange", trigger, false);
+        },
+        goTo: function goTo(hash) {
+            window.location.hash = hash;
+        }
     }
 }
 
