@@ -1,13 +1,13 @@
 var test = require('tape');
 var chronicler = require('./');
 
-test('onhashchange can be stopped', function(t) {
+test('onhashchange', function(t) {
+    window.location.hash = "1";
+
     var history = chronicler();
-    history.start();
 
     history.once("change", function() {
         t.pass();
-
         window.location.hash = "2";
     });
 
@@ -21,6 +21,8 @@ test('onhashchange can be stopped', function(t) {
         t.end();
     });
 
-    window.location.hash = "1";
+    setTimeout(function() {
+        history.start();
+    }, 0);
 });
 

@@ -18,6 +18,7 @@ function pushState() {
     return {
         start: function() {
             window.addEventListener("hashchange", change, false);
+            change();
         },
         stop: function() {
             window.removeEventListener("hashchange", change, false);
