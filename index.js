@@ -4,8 +4,8 @@ var assign = require('object-assign');
 module.exports = function() {
     var events = new EventEmitter();
 
-    var obj = hashChange(function() {
-        events.emit("change", decodeURI(getHash()));
+    var obj = hashChange(function(fragment) {
+        events.emit("change", decodeURI(fragment));
     });
 
     return assign(obj, {
@@ -15,7 +15,11 @@ module.exports = function() {
     });
 };
 
-function hashChange(trigger) {
+function hashChange(onChange) {
+    var trigger = function() {
+        onChange(getHash());
+    }
+
     return {
         start: function() {
             window.addEventListener("hashchange", trigger, false);
