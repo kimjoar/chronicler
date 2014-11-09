@@ -7,17 +7,19 @@ test('onhashchange', function(t) {
     var history = chronicler();
 
     history.once("change", function() {
-        t.pass();
+        t.equal(window.location.hash, "#1");
+
         window.location.hash = "2";
     });
 
     history.once("change", function() {
-        t.pass();
+        t.equal(window.location.hash, "#2");
+
         history.goTo("3");
     });
 
     history.once("change", function() {
-        t.pass();
+        t.equal(window.location.hash, "#3");
         t.end();
     });
 

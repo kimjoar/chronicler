@@ -8,11 +8,11 @@ function pushState() {
     var events = new EventEmitter();
 
     function change() {
-        goTo(getHash());
+        events.emit("change", decodeURI(getHash()));
     }
 
     function goTo(hash) {
-        events.emit("change", decodeURI(hash));
+        window.location.hash = hash;
     }
 
     return {
