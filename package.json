@@ -10,6 +10,10 @@
     "phantomjs": "^1.9.10",
     "tape": "^3.0.2"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kjbekkelund/chronicler.git"
+  },
   "scripts": {
     "test": "testem ci",
     "build": "browserify index.js --standalone chronicler | derequire > dist/chronicler.js"
