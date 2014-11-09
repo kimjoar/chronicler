@@ -31,7 +31,7 @@ function pushState() {
 }
 
 function getHash() {
-    var match = window.location.href.match(/#(.*)$/);
+    var match = window.location.hash.match(/^#(.*)$/);
     return match ? match[1] : '';
 }
 
