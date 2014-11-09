@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+<script src="../dist/chronicler.js"></script>
+<script>
+var h = chronicler();
+
+h.on("change", function(fragment) {
+    console.log("current hash", fragment);
+});
+
+h.start();
+</script>
+</head>
+<body>
+<h1>Check the console. Change the hash in the browser to "search/test".</h1>
+</body>
+</html>
