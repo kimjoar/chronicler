@@ -1,6 +1,6 @@
 {
   "name": "chronicler",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Keeps track of browser history",
   "main": "index.js",
   "dependencies": {
